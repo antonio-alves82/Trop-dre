@@ -1,0 +1,38 @@
+///$tab Conciliação
+LET V_DATA_INI = ADDMONTHS( TODAY() , - 6)  ;
+LET V_DATA_FIM = TODAY() + 0   ;
+DO WHILE V_DATA_INI <=  V_DATA_FIM
+	LET V_ANOMESDIA_INI  = DATE(MonthStart(V_DATA_INI), 'YYYYMMDD') ;
+	LET V_ANOMESDIA_FIM  = DATE(MonthEnd(V_DATA_INI), 'YYYYMMDD') ;
+	LET V_ANOMES = Date(V_DATA_INI,'YYYYMM') ;
+   
+Conciliacao:
+SQL
+SELECT
+	m.loja,
+	R.Dias,
+	m.CupomNumr,
+	m.data,
+	m.Receb_Data,
+	m.Sequencia,
+	m.TransNumr,
+	m.RecCodg,
+	r.Descricao,
+	m.valor as TotalConciliacao
+	
+from  CxMov M  join CxRec R on M.RecCodg = R.RecCodg
+
+where M.loja = 101
+	and M.Loja = R.Loja
+	and	m.data BETWEEN '$(V_ANOMESDIA_INI) '
+	AND '$(V_ANOMESDIA_FIM)'
+	and m.loja = '101'
+
+;
+    
+ Store Conciliacao into [lib://Extração - Lojas Tropical:DataFiles/Conciliacao_$(V_ANOMES).qvd] ;
+drop table Conciliacao;
+
+LET V_DATA_INI = AddMonths( V_DATA_INI, 1 );
+
+LOOP;

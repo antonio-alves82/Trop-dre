@@ -1,0 +1,20 @@
+///$tab Extração
+LET V_DATA_INI = ADDMONTHS( TODAY() , - 6)  ;
+LET V_DATA_FIM = TODAY() + 0   ;
+DO WHILE V_DATA_INI <=  V_DATA_FIM
+	LET V_ANOMESDIA_INI  = DATE(MonthStart(V_DATA_INI), 'YYYYMMDD') ;
+	LET V_ANOMESDIA_FIM  = DATE(MonthEnd(V_DATA_INI), 'YYYYMMDD') ;
+	LET V_ANOMES = Date(V_DATA_INI,'YYYYMM') ;	
+    
+DRE:
+sql
+EXEC Stp_RelBeta_DRE_Grupo 1 , '' , '' , '' , '$(V_ANOMESDIA_INI)' , '$(V_ANOMESDIA_FIM)' , 0 , 0 , 2 , 1 , 0 , 0 , 0 
+;
+ 
+
+Store DRE into [lib://Extração - Lojas Tropical:DataFiles/DRE_$(V_ANOMES).qvd] ;
+drop table DRE;
+
+LET V_DATA_INI = AddMonths( V_DATA_INI, 1 );
+
+LOOP;

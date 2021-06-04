@@ -1,0 +1,14 @@
+///$tab União Conciliação
+Conciliacao:
+LOAD
+    loja,
+    Dias,
+    CupomNumr,
+    data,
+    Receb_Data,
+    Sequencia,
+    TransNumr,
+    RecCodg,
+    Descricao,
+    TotalConciliacao
+FROM [lib://Extração - Lojas Tropical:DataFiles/Conciliacao_*.qvd] (qvd);
